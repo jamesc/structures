@@ -27,9 +27,13 @@ class Heap:
     def __init__(self, contents=None):
         """Create a new, empty Heap.
 
-        To make it more pythonic we use a 0-indexed structure"""
-
-        self._heap = contents or []
+        To make it more pythonic we use a 0-indexed structure
+        """
+        if contents:
+            self._heap = contents
+            self._heapify()
+        else:
+            self._heap = []
 
     def insert(self, elem):
         """Insert an element into the heap, growing it by 1."""
@@ -52,6 +56,20 @@ class Heap:
             self._siftdown(0, len(self._heap))
         else:
             returnitem = lastelt
+        return returnitem
+
+    def replace(self, elem):
+        """Remove the max and replace it with the supplied element.
+        Note that the value returned could be less than the one
+        supplied.  Should be used in code e.g
+
+        if elem < heap.find_max():
+            elem = heap.replace(elem)
+
+        """
+        returnitem = self._heap[0] # return IndexError if heap is empty
+        self._heap[0] = elem
+        self._siftdown(0, len(self._heap))
         return returnitem
 
     def _siftup(self, pos):
@@ -80,6 +98,11 @@ class Heap:
                     = self._heap[largest], self._heap[startpos]
             self._siftdown(largest, endpos)
 
+    def _heapify(self):
+        """Given a unheaped lst, heapify it in O(n)."""
+        endpos = len(self._heap) / 2
+        for idx in reversed(xrange(endpos)):
+            self._siftdown(idx, len(self._heap))
 
     def __len__(self):
         return self._heap.__len__()
