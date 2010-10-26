@@ -1,0 +1,2 @@
+include Makefile setup.cfg
+include README.md LICENSE
