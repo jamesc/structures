@@ -30,7 +30,7 @@ class Heap:
         To make it more pythonic we use a 0-indexed structure
         """
         if contents:
-            self._heap = contents
+            self._heap = list(contents) # copy it
             self._heapify()
         else:
             self._heap = []
