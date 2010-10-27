@@ -17,6 +17,7 @@ limitations under the License.
 """
 
 import unittest
+import random
 
 from ds import sort
 
@@ -29,9 +30,33 @@ class TestSort(unittest.TestCase):
         self.assertEquals(sorted_data, data)
 
 
-    def testQuicksort(self):
+    def testHeapsort(self):
         data = [ 3, 6, 4, 1, 8, 3, 6, 4, 87, 54, 37,54 ,19, 345]
         sorted_data = sorted(data)
         sort.heapsort(data)
 
         self.assertEquals(sorted_data, data)
+
+    def testMergesort(self):
+        data = [ 3, 6, 4, 1, 8, 3, 6, 4, 87, 54, 37,54 ,19, 345]
+        sorted_data = sorted(data)
+        data = sort.mergesort(data)
+
+        self.assertEquals(sorted_data, data)
+
+    def testBigArray(self):
+        data = [ random.randint(1, 1000) for i in range(1000)]
+        sorted_data = sorted(data)
+
+
+        qdata = list(data)
+        sort.quicksort(qdata)
+        self.assertEquals(sorted_data, qdata)
+
+        hdata = list(data)
+        sort.heapsort(hdata)
+        self.assertEquals(sorted_data, hdata)
+
+        mdata = list(data)
+        mdata = sort.mergesort(mdata)
+        self.assertEquals(sorted_data, mdata)

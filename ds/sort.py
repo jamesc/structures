@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-
 from ds.heap import Heap
+
+__all__ = [ 'quicksort', 'heapsort', 'mergesort' ]
 
 def _partition(array, left, right, pivot):
     """Do the partition step of quicksort
@@ -37,21 +38,64 @@ def _partition(array, left, right, pivot):
     array[store], array[right] = array[right], array[store]
     return store
 
-def quicksort(array, left = 0, right = None):
-    """Implements quicksort on a fixed length array."""
-    if not right:
+
+def quicksort(array, left=0, right=-1):
+    """Implements quicksort in-place on a fixed length array
+    """
+    if right is -1:
         right = len(array) - 1
-    if right > left:
+
+    while right > left:
         pivot = left + (right - left) / 2
         new_pivot = _partition(array, left, right, pivot)
-        quicksort(array, left, new_pivot - 1)
-        quicksort(array, new_pivot + 1, right)
+        # Recurse into smaller, tail call into larger
+        # to avoid stack overflow
+        if new_pivot - left < right - new_pivot:
+            quicksort(array, left, new_pivot - 1)
+            left = new_pivot + 1
+        else:
+            quicksort(array, new_pivot + 1, right)
+            right = new_pivot - 1
 
 def heapsort(array):
-    """Implements heapsort using heap.Heap.  Insert all
+    """Implements heapsort in-place using heap.Heap.  Insert all
     the values in (via heapify in O(n) ) and the read them
-    out in max order, inserting into the correct place in the orig list"""
+    out in max order, inserting into the correct place in the
+    orig list
+    """
 
     heapy = Heap(array)
     for i in reversed(range(len(array))):
         array[i] = heapy.extract_max()
+
+
+def _merge(left, right):
+    """Merge two lists and return the merged result
+    """
+    result = []
+
+    while len(left) or len(right):
+        if len(left) and len(right):
+            if left[0] <= right[0]:
+                result.append(left.pop(0))
+            else:
+                result.append(right.pop(0))
+        elif len(left):
+            result.extend(left)
+            left = []
+        elif len(right):
+            result.extend(right)
+            right = []
+    return result
+
+def mergesort(array):
+    """Implements mergesort."""
+    size = len(array)
+    if size <= 1:
+        return array
+    left = array[:size/2]
+    right = array[size/2:]
+
+    left = mergesort(left)
+    right = mergesort(right)
+    return _merge(left, right)
