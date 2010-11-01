@@ -23,12 +23,16 @@ Graph structures and algorithms.
 
 """
 
+from collections import deque
+
+WHITE, GREY, BLACK = range(3)
+
 class UniGraph:
     """
     Defines a generic undirected graph, based on adjacency lists.
 
-
     """
+
     def __init__(self, node_count, edges = None):
         """Create a new graph with the given number of vertices.
 
@@ -55,17 +59,12 @@ class UniGraph:
             self.vertexes[i].append(j)
             self.vertexes[j].append(i)
 
-    def __str__(self):
-        """Print out representation of graph."""
-        return "[Graph: n=%d, m=%d]" % self.size()
+    def has_edge(self, i, j):
+        """Check if an edge i,j is in the graph
 
+        """
 
-    def __len__(self):
-        return len(self.vertexes)
-
-    def size(self):
-        """Return a tuple of (n, m) for the graph."""
-        return len(self.vertexes), sum([len(v) for v in self.vertexes])
+        return j in self.vertexes[i]
 
     def neighbours(self, vertex):
         """Return the list of neighbours of vertex
@@ -77,3 +76,84 @@ class UniGraph:
 
         Raises: IndexError if the vertex is out of range of the graph"""
         return list(self.vertexes[vertex])
+
+    def size(self):
+        """Return a tuple of (n, m) for the graph."""
+        return len(self.vertexes), sum([len(v) for v in self.vertexes])
+
+    def __str__(self):
+        """Print out representation of graph."""
+        return "[Graph: n=%d, m=%d]" % self.size()
+
+    def __len__(self):
+        return len(self.vertexes)
+
+
+def components(graph):
+    """Find and return the connected components of a graph
+
+    Parameters:
+    graph: A graph. It needs to support `neighbours(i) and len()
+
+    Returns:  List of lists containing the vertices in each
+    connected component"""
+
+    result = []
+    colour = [ WHITE for i in range(len(graph))]
+
+    # use a stack to save on linear search through colour to find
+    # next grey node
+    grey = deque()
+    for i in range(len(graph)):
+        if colour[i] == WHITE:
+            # Start new component
+            component = []
+            result.append(component)
+
+            # Mark Grey
+            colour[i] = GREY
+            grey.append(i)
+            while grey:
+                j = grey.pop() # BFS
+                for k in graph.neighbours(j):
+                    if colour[k] == WHITE:
+                        colour[k] = GREY
+                        grey.append(k)
+                # Add to component
+                component.append(j)
+                colour[j] = BLACK
+    return result
+
+def shortest_path(graph, start, end ):
+    """Return the shortest path between two vertices in a graph.
+
+    We do a BFS traversal of the graph, starting at `start`.  We keep a
+    count of distance during the traversal for each visited node.
+
+    After traversing the connected component containing `start` we will
+    have either hit the node, or it's in a difference connected component."""
+    if start > len(graph) or end > len(graph):
+        return -1
+
+    infinity = len(graph) + 1000 # Big enough
+    distance = [ infinity for i in range(len(graph))]
+    colour = [ WHITE for i in range(len(graph))]
+    grey = deque()
+
+    colour[start] = GREY
+    grey.append(start)
+    distance[start] = 0
+
+    while grey:
+        i = grey.popleft()
+        for j in graph.neighbours(i):
+            if colour[j] == WHITE:
+                colour[j] = GREY
+                grey.append(j)
+                distance[j] = distance[i] + 1
+        colour[i] = BLACK
+
+    if distance[end] == infinity:
+        return -1
+    return distance[end]
+
