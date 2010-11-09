@@ -44,10 +44,9 @@ class TestSort(unittest.TestCase):
 
         self.assertEquals(sorted_data, data)
 
-    def xxtestBigArray(self):
+    def testBigArray(self):
         data = [ random.randint(1, 1000) for i in range(1000)]
         sorted_data = sorted(data)
-
 
         qdata = list(data)
         sort.quicksort(qdata)

@@ -45,17 +45,16 @@ def quicksort(array, left=0, right=-1):
     if right is -1:
         right = len(array) - 1
 
-    while right > left:
+    if left < right:
         pivot = left + (right - left) / 2
         new_pivot = _partition(array, left, right, pivot)
-        # Recurse into smaller, tail call into larger
-        # to avoid stack overflow
-        if new_pivot - left < right - new_pivot:
+        if new_pivot - left > right - new_pivot:
             quicksort(array, left, new_pivot - 1)
-            left = new_pivot + 1
+            quicksort(array, new_pivot + 1, right)
         else:
             quicksort(array, new_pivot + 1, right)
-            right = new_pivot - 1
+            quicksort(array, left, new_pivot - 1)
+
 
 def heapsort(array):
     """Implements heapsort in-place using heap.Heap.  Insert all
