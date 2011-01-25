@@ -14,6 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+
+from random import randrange
+
 from ds.heap import Heap
 
 __all__ = [ 'quicksort', 'heapsort', 'mergesort' ]
@@ -38,8 +41,26 @@ def _partition(array, left, right, pivot):
     array[store], array[right] = array[right], array[store]
     return store
 
+       
+def quicksort(list):
+    """
+    Quicksort using list comprehensions and randomized pivot
+    >>> quicksort<<docstring test numeric input>>
+    <<docstring test numeric output>>
+    >>> quicksort<<docstring test string input>>
+    <<docstring test string output>>
+    """
+    def qsort(list):
+        if list == []: 
+            return []
+        else:
+            pivot = list.pop(randrange(len(list)))
+            lesser = qsort([l for l in list if l < pivot])
+            greater = qsort([l for l in list if l >= pivot])
+            return lesser + [pivot] + greater
+    return qsort(list[:])
 
-def quicksort(array, left=0, right=-1):
+def quicksort_recurse(array, left=0, right=-1):
     """Implements quicksort in-place on a fixed length array
     """
     if right is -1:
