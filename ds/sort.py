@@ -52,7 +52,11 @@ def heapsort(array):
     """Implements heapsort in-place using heap.Heap.  Insert all
     the values in (via heapify in O(n) ) and the read them
     out in max order, inserting into the correct place in the
-    orig list
+    orig list.
+
+    This uses an additional O(n) space since we create another copy in the
+    Heap.  We could do this in place if the heap tracked the max heap size
+    separate from the max array size
     """
 
     heapy = Heap(array)

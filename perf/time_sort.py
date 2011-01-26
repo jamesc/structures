@@ -29,7 +29,7 @@ import time
 from ds import sort
 
 def main():
-    data = [ random.randint(1, 10000) for i in range(1000)]
+    data = [ random.randint(1, 1000000) for i in range(10000)]
     start = time.time()
     sorted_data = sorted(data)
     end = time.time()

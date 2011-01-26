@@ -23,11 +23,11 @@ Heaps and Priority Queues
 """
 
 class Heap:
-    """A heap efficiently supports the following operations:
+    """A (max-)heap efficiently supports the following operations:
 
         Insert(e)
         e = ExtractMax()
-
+        e = replace(new_e)
         It maintains the heap invariant, which that the children of any
         element are less that the element."""
 
