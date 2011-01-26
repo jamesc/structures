@@ -45,7 +45,7 @@ class TestSort(unittest.TestCase):
         self.assertEquals(sorted_data, data)
 
     def testBigArray(self):
-        data = [ random.randint(1, 100000) for i in range(10000)]
+        data = [ random.randint(1, 100000) for i in range(1000)]
         sorted_data = sorted(data)
 
         qdata = list(data)

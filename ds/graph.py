@@ -1,5 +1,5 @@
 #
-# Copyrigh CERN, 2010.
+# Copyrigh Platform14, 2010.
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements. See the NOTICE file
@@ -33,7 +33,7 @@ class UniGraph:
 
     """
 
-    def __init__(self, node_count, edges = None):
+    def __init__(self, node_count, edges=None):
         """Create a new graph with the given number of vertices.
 
         Parameters:
@@ -43,7 +43,7 @@ class UniGraph:
                where i, j are 0-indexed indices of the
                vertices.  (optional)
         """
-        self.vertexes = [ [] for v in range(node_count)]
+        self.vertexes = [ [] for _ in range(node_count)]
         if edges:
             for edge in edges:
                 self.add(edge)

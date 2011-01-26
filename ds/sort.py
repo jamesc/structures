@@ -1,19 +1,26 @@
+#
+# Copyrigh Platform14, 2010.
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements. See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership. The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
 """
-Copyright (c) 2010 CERN. All rights reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Sorting algorithms
 """
-
 
 from random import randrange
 
@@ -21,28 +28,7 @@ from ds.heap import Heap
 
 __all__ = [ 'quicksort', 'heapsort', 'mergesort' ]
 
-def _partition(array, left, right, pivot):
-    """Do the partition step of quicksort
-
-    array:  the array to be sorted
-    the section (left, right - 1) of the array will
-    be pivoted around the index 'pivot'
-
-    Returns:
-       The new index of the value which was at pivot
-    """
-    pivot_val = array[pivot]
-    array[pivot], array[right] = array[right], array[pivot]
-    store = left
-    for i in range(left, right):
-        if array[i] <= pivot_val:
-            array[i], array[store] = array[store], array[i]
-            store += 1
-    array[store], array[right] = array[right], array[store]
-    return store
-
-       
-def quicksort(list):
+def quicksort(array):
     """
     Quicksort using list comprehensions and randomized pivot
     >>> quicksort<<docstring test numeric input>>
@@ -50,32 +36,17 @@ def quicksort(list):
     >>> quicksort<<docstring test string input>>
     <<docstring test string output>>
     """
-    def qsort(list):
-        if list == []: 
+    def qsort(array):
+        """We want to not perturbe the original list, so use this
+        inner def."""
+        if array == []:
             return []
         else:
-            pivot = list.pop(randrange(len(list)))
-            lesser = qsort([l for l in list if l < pivot])
-            greater = qsort([l for l in list if l >= pivot])
+            pivot = array.pop(randrange(len(array)))
+            lesser = qsort([l for l in array if l < pivot])
+            greater = qsort([l for l in array if l >= pivot])
             return lesser + [pivot] + greater
-    return qsort(list[:])
-
-def quicksort_recurse(array, left=0, right=-1):
-    """Implements quicksort in-place on a fixed length array
-    """
-    if right is -1:
-        right = len(array) - 1
-
-    if left < right:
-        pivot = left + (right - left) / 2
-        new_pivot = _partition(array, left, right, pivot)
-        if new_pivot - left > right - new_pivot:
-            quicksort(array, left, new_pivot - 1)
-            quicksort(array, new_pivot + 1, right)
-        else:
-            quicksort(array, new_pivot + 1, right)
-            quicksort(array, left, new_pivot - 1)
-
+    return qsort(array[:])
 
 def heapsort(array):
     """Implements heapsort in-place using heap.Heap.  Insert all
