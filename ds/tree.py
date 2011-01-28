@@ -25,9 +25,27 @@ Binary Trees and Binary Search Trees
 class Node:
     """A tree node, holding a value and left/right child pointers"""
 
-    def __init__(self, value, left=None, right=None):
+    def __init__(self, value, parent, left=None, right=None):
         """Create a new node, possible with pointers to left and right
-        children"""
+        children and parent"""
         self.value = value
+        self.parent = parent
         self.left = left
         self.right = right
+
+class BinaryTree(object):
+    """A Binary search tree."""
+
+    def __init__(self, root=None):
+        """Create a new Binary Tree.  Optionally provide a root node."""
+        self.root = root
+        
+    
+    def root(self):
+        """Return the root of the tree.
+        
+        Returns `None` if the tree is empty.
+        """
+        return self.root
+    
+    def search
